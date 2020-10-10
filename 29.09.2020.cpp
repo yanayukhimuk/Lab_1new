@@ -1,45 +1,42 @@
-﻿
-#include <iostream>
+﻿#include <iostream>
 #include <Windows.h>
 using namespace std; 
 
-
-struct student {
+struct Student {
     string name;
-        string surname; 
+    string surname; 
     int score[3];
-    int Sum; 
-
+    int Sum = 0;
 };
 
-void showData(student* st, int amount)
+void showData(Student* st, int amount)
 {
     for (int i = 0; i < amount; i++)
     {
-        cout << "#" << i + 1 << "Имя:\t" << st[i].name << "Фамилия:\t" << st[i].surname << "\t" << endl;
+        cout << "#" << i + 1 << "Имя:\t" << st[i].name << "Фамилия:\t" << st[i].surname << endl;
         for (int j = 0; j < 3; j++)
-        {
             cout << "Оценка # " << j + 1 << ": " << st[i].score[j] << endl;
-        }
     }
-
 }
-   /* void sort(student *& student, const int size) // a.	четные варианты – по возрастанию, нечетные – по убыванию
+bool operator<(Student s1, Student s2) {
+    return s1.Sum < s2.Sum;
+}
+void sort(Student*& student, const int size) // по убыванию
+{
+    cout << "sort:" << endl;
+    for (int i = 0; i < size - 1; i++)
     {
-        cout << "sort:" << endl; 
-        for (int i = 0; i < size - 1; i++)
+        for (int j = i + 1; j < size; j++)
         {
-            for (int j = i + 1; j < size; j++)
+            if (student[i] < student[j]);
             {
-                if (student[i] < student[j]);
-                {
-                    student tempstudent = student[i];
-                    student[i] = student[j];
-                    student[j] = tempstudent;
-                }
+                Student tempstudent = student[i];
+                student[i] = student[j];
+                student[j] = tempstudent;
             }
         }
-    } */
+    }
+}
 
     int main()
     {
@@ -51,29 +48,24 @@ void showData(student* st, int amount)
 
         if (amount < 2) {
             cout << "Введите большее число" << endl;
+            return 0;
         }
-        else
+        Student* st = new Student[amount];
+        for (int i = 0; i != amount; i++)
         {
-            student* st = new student[amount];
-            for (int i = 0; i != amount; i++)
-            {
-                cout << "# " << i + 1 << " " << "Имя студента" << endl;
-                cin >> st[i].name;
-                cout << "#" << i + 1 << " " << "Фамилия студента" << endl;
-                cin >> st[i].surname;
-                cout << "Оценки студента" << endl;
-                for (int j = 0; j < 3; j++)
-                {
-                    cin >> st[i].score[j];
-
-                }
-
-                cin.get();
-
+            cout << "# " << i + 1 << " " << "Имя студента" << endl;
+            cin >> st[i].name;
+            cout << "#" << i + 1 << " " << "Фамилия студента" << endl;
+            cin >> st[i].surname;
+            cout << "Оценки студента" << endl;
+            for (int j = 0; j < 3; j++) {
+                cin >> st[i].score[j];
+                st[i].Sum += st[i].score[j];
             }
-
-
+            cin.get();
         }
+        sort(st, amount);
+        showData(st, amount);
         return 0;
     }
 
